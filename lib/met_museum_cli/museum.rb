@@ -12,6 +12,8 @@ class Museum
     def self.all 
         @@all 
     end 
+
+    
     
 
 end 

@@ -3,7 +3,7 @@ class Department
 
     @@all = []
 
-    def initialize(art_id = nil)
+    def initialize(art_id)
         @art_id = art_id
         @@all << self 
     end 
@@ -11,6 +11,9 @@ class Department
     def self.all 
         @@all 
     end 
+
+    
+
     
 
 end 
