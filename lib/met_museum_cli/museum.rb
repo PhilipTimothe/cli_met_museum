@@ -1,5 +1,17 @@
 class Museum
+    attr_accessor :name, :id
 
-    puts "museum class loaded"
+    @@all = []
+
+    def initialize(name, id)
+        @name = name 
+        @id = id 
+        @@all << self 
+    end 
+
+    def self.all 
+        @@all 
+    end 
+    
 
 end 
