@@ -13,7 +13,7 @@ class Museum
         @@all 
     end 
 
-    
+
     
 
 end 

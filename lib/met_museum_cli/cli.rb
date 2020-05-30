@@ -8,16 +8,15 @@ class Cli
     end
 
     def main_functions
-         print_all_art_departments
-         print_selection_prompt
-         num_id = valid?(user_selection_input) #(validate selection id number)
-         get_department_items(num_id)
-         print_second_selection_prompt
-         input = valid_again?(user_second_selection_input) #(validate selection id number)
-         get_artwork_info(input)
-        # print_selection_details
-        # print_continuation_prompt
-        # explore_more?
+        print_all_art_departments
+        print_selection_prompt
+        num_id = valid?(user_selection_input) #(validate selection id number)
+        get_department_items(num_id)
+        print_second_selection_prompt
+        second_input = user_second_selection_input #(validate selection id number)
+        print_selection_details(second_input)
+        print_continuation_prompt
+        explore_more?
     end
 
     def welcome_guest
@@ -60,28 +59,69 @@ class Cli
         sleep 1.5
         puts ""
         puts "Explore a random piece of art work!"
-        puts "Enter a number between 1 and 10, then press the enter key!"
+        puts "Enter a number between 1 and #{Department.all.size}, then press the enter key!"
     end
 
     def user_second_selection_input
-        gets.chomp
-    end
-    
-    def valid_again?(input)
-        input = input.to_i
-            if input < 1 || input > 10
+        input = gets.chomp.to_i
+            if input < 1 || input > Department.all.size
                 puts ""
                 puts "So sorry, that is not a valid choice."
-                puts "Please enter a number between 1 and 10, then press the enter key!"
+                puts "Please enter a number between 1 and #{Department.all.size}, then press the enter key!"
                 sleep 1.5
                 user_second_selection_input
             end
         input 
-    end
-
-    def get_artwork_info(input)
         artwork_id = Department.all[input -1].art_id
         Api.artwork_by_id(artwork_id)
+        
+    end
+
+    def print_selection_details(second_input)
+        sleep 1
+        puts ""
+        puts "Artist: #{second_input.artist}"
+        puts "Artwork: #{second_input.artwork}"
+        puts "Culture: #{second_input.culture}"
+        puts "Meduim: #{second_input.medium}"
+        puts "Origin Date: #{second_input.origin_date}"
+        puts "Region: #{second_input.region}"
+        puts ""
+        puts "follow the artwork website link to intimately experience this work of art."
+        puts "Artwork Website Url: #{second_input.url}"
+        puts ""
+    end
+
+    def print_continuation_prompt
+        puts "Press enter key to continue!"
+        gets.chomp
+    end
+
+    def explore_more?
+        puts ""
+        puts "Would like to explore more art from this category? Enter y / n "
+        puts ""
+        puts "If you would like to select from a different art category enter m to choose from the main category list."
+        input = gets.chomp
+
+        if input == "y" 
+            print_second_selection_prompt
+            second_input = user_second_selection_input #(validate selection id number)
+            print_selection_details(second_input)
+            print_continuation_prompt
+            explore_more?
+        elsif input == "n"
+            exit_program
+        elsif input == "m"
+            main_functions
+        # elsif !input == "y" || !input == "n"
+        #     puts "Sorry.  We do not understand.  Please enter y / n. "
+        end
+    end
+
+    def exit_program  
+        puts ""
+        puts "Dont forget, art makes life fun!!!  See you next time  =)"
     end
 
 

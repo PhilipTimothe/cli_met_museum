@@ -25,8 +25,16 @@ class Api
     def self.artwork_by_id(artwork_id)
         response = RestClient.get(ROOT_URL + "objects/" + "#{artwork_id}")
         data = JSON.parse(response.body)
+        
+        artwork = data["title"]
+        artist = data["artistDisplayName"]
+        culture = data["culture"]
+        origin_date = data["objectDate"]
+        medium = data["medium"]
+        region = data["region"]
+        url = data["objectURL"]
 
-        binding.pry
+        Artwork.new(artwork, artist, culture, origin_date, medium, region, url)
     end
 
 
