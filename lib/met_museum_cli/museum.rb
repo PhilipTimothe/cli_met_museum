@@ -12,7 +12,6 @@ class Museum
 
     def add_art_ids(id)      #Might not need this at all. Double check code...
         @art_ids << id
-        # id.museum = self
     end
 
     def art_ids

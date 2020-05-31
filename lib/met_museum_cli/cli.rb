@@ -81,23 +81,30 @@ class Cli
         input 
         museum = Museum.find_by_id(num_id)
         artwork_id = museum.art_ids[input -1]
-        # artwork_id = Department.all[input -1].art_id
-        Api.artwork_by_id(artwork_id)
-        # binding.pry
+        # artwork_id = Department.all[input -1].art_id   #old code/ refactored into a save method
+        department = Department.find_by_id(artwork_id)
+            if department.art_details == []
+                call = Api.artwork_by_id(artwork_id)
+                department.add_art_details(call)
+            end
+        return artwork_id
+     #     binding.pry
     end
 
     def print_selection_details(second_input)
+        department = Department.find_by_id(second_input)
+        binding.pry
         sleep 1
         puts ""
-        puts "Artist: #{second_input.artist}"
-        puts "Artwork: #{second_input.artwork}"
-        puts "Culture: #{second_input.culture}"
-        puts "Meduim: #{second_input.medium}"
-        puts "Origin Date: #{second_input.origin_date}"
-        puts "Region: #{second_input.region}"
+        puts "Artist: #{department.artist}"
+        puts "Artwork: #{department.artwork}"
+        puts "Culture: #{department.culture}"
+        puts "Meduim: #{department.medium}"
+        puts "Origin Date: #{department.origin_date}"
+        puts "Region: #{department.region}"
         puts ""
         puts "follow the artwork website link to intimately experience this work."
-        puts "Artwork Website Url: #{second_input.url}"
+        puts "Artwork Website Url: #{department.url}"
         puts ""
  #       binding.pry
     end
