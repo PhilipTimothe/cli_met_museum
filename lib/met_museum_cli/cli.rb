@@ -13,7 +13,7 @@ class Cli
         num_id = valid?(user_selection_input) #(validate selection id number)
         get_department_items(num_id)
         print_second_selection_prompt
-        second_input = user_second_selection_input #(validate selection id number)
+        second_input = user_second_selection_input(num_id) #(validate selection id number)
         print_selection_details(second_input)
         print_continuation_prompt
         explore_more?
@@ -52,7 +52,14 @@ class Cli
 
     def get_department_items(num_id) 
         art_dep_id = (Museum.all[num_id - 1]).id
-        Api.department_by_id(art_dep_id)
+        museum = Museum.find_by_id(num_id)
+            if museum.art_ids == []
+                call = Api.department_by_id(art_dep_id)
+                call.each {|info| museum.add_art_ids(info)}
+            end
+        # museum.add_art_ids(call).flatten
+        # museum.art_ids << call
+        # binding.pry
     end
 
     def print_second_selection_prompt
@@ -62,7 +69,7 @@ class Cli
         puts "Enter a number between 1 and #{Department.all.size}, then press the enter key!"
     end
 
-    def user_second_selection_input
+    def user_second_selection_input(num_id)
         input = gets.chomp.to_i
             if input < 1 || input > Department.all.size
                 puts ""
@@ -72,9 +79,11 @@ class Cli
                 user_second_selection_input
             end
         input 
-        artwork_id = Department.all[input -1].art_id
+        museum = Museum.find_by_id(num_id)
+        artwork_id = museum.art_ids[input -1]
+        # artwork_id = Department.all[input -1].art_id
         Api.artwork_by_id(artwork_id)
-        
+        # binding.pry
     end
 
     def print_selection_details(second_input)
@@ -87,9 +96,10 @@ class Cli
         puts "Origin Date: #{second_input.origin_date}"
         puts "Region: #{second_input.region}"
         puts ""
-        puts "follow the artwork website link to intimately experience this work of art."
+        puts "follow the artwork website link to intimately experience this work."
         puts "Artwork Website Url: #{second_input.url}"
         puts ""
+ #       binding.pry
     end
 
     def print_continuation_prompt
@@ -101,7 +111,7 @@ class Cli
         puts ""
         puts "Would like to explore more art from this category? Enter y / n "
         puts ""
-        puts "If you would like to select from a different art category enter m to choose from the main category list."
+        puts "Want to select a different art category? Enter m "
         input = gets.chomp
 
         if input == "y" 
@@ -114,8 +124,6 @@ class Cli
             exit_program
         elsif input == "m"
             main_functions
-        # elsif !input == "y" || !input == "n"
-        #     puts "Sorry.  We do not understand.  Please enter y / n. "
         end
     end
 

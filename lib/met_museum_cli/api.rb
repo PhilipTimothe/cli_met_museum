@@ -15,11 +15,13 @@ class Api
     end
 
     def self.department_by_id(art_dep_id)
+        puts "=)"
         response = RestClient.get(ROOT_URL + "search?departmentId=" + "#{art_dep_id}" + "&q=cat")
         data = JSON.parse(response.body)
         data['objectIDs'].each do |id| id 
             Department.new(id)
         end
+    #    binding.pry
     end
 
     def self.artwork_by_id(artwork_id)

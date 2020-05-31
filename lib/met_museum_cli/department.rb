@@ -1,5 +1,5 @@
 class Department
-    attr_accessor :art_id
+    attr_accessor :museum, :art_id
 
     @@all = []
 
