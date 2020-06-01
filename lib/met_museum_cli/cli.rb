@@ -10,10 +10,10 @@ class Cli
     def main_functions
         print_all_art_departments
         print_selection_prompt
-        num_id = valid?(user_selection_input) #(validate selection id number)
-        get_department_items(num_id)
+        @num_id = valid?(user_selection_input) #(validate selection id number)
+        get_department_items(@num_id)
         print_second_selection_prompt
-        second_input = user_second_selection_input(num_id) #(validate selection id number)
+        second_input = user_second_selection_input(@num_id) #(validate selection id number)
         print_selection_details(second_input)
         print_continuation_prompt
         explore_more?
@@ -93,18 +93,17 @@ class Cli
 
     def print_selection_details(second_input)
         department = Department.find_by_id(second_input)
-        binding.pry
         sleep 1
         puts ""
-        puts "Artist: #{department.artist}"
-        puts "Artwork: #{department.artwork}"
-        puts "Culture: #{department.culture}"
-        puts "Meduim: #{department.medium}"
-        puts "Origin Date: #{department.origin_date}"
-        puts "Region: #{department.region}"
+        puts "Artist: #{department.art_details[0].artist}"
+        puts "Artwork: #{department.art_details[0].artwork}"
+        puts "Culture: #{department.art_details[0].culture}"
+        puts "Meduim: #{department.art_details[0].medium}"
+        puts "Origin Date: #{department.art_details[0].origin_date}"
+        puts "Region: #{department.art_details[0].region}"
         puts ""
         puts "follow the artwork website link to intimately experience this work."
-        puts "Artwork Website Url: #{department.url}"
+        puts "Artwork Website Url: #{department.art_details[0].url}"
         puts ""
  #       binding.pry
     end
@@ -123,7 +122,7 @@ class Cli
 
         if input == "y" 
             print_second_selection_prompt
-            second_input = user_second_selection_input #(validate selection id number)
+            second_input = user_second_selection_input(@num_id)          #(validate selection id number)
             print_selection_details(second_input)
             print_continuation_prompt
             explore_more?
