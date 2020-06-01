@@ -2,6 +2,38 @@ require 'pry'
 class Cli
 
     def run
+        puts "                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+                                                                                                    
+        /yys/-.yyy/.-:+yyyyys:.  `-+yyyo----/oyyo                              
+        ss-   `yyy:    `oyyy:       syy+      .+y                              
+       `+     `yyy:     .yyy-       syy+   ``   :-                             
+              `yyy:     .yyy-       syy+   -:    `                             
+              `yyy:     .yyy:.......syy+.-/yo                                  
+              `yyy:     .yyy:```````syy+`.:oy                                  
+              `yyy:     .yyy-       syy+    /.                                 
+              `yyy:     .yyy-       syy+     `   /`                            
+              `yyy:     .yyy-       syy+       .os                             
+            .-oyyy:  `.:syyys-`  `./yyyo....-/oyy/                             
+            ``````    `````````   ```````````````                              
+       ````               `````````````````````````                            
+       .-oyyo.         `+yy/...-+yyyyo:..yyy/.-+yyo                            
+         `yyyy.        +yyy:     `oy:    yyy:   `+y                            
+         `ooyyy.      /-yyy:   .  `+     yyy:     :.                           
+         `+`syys`    /.`yyy:   +.        yyy:                                  
+         `+ `syys`  :- `yyy/-:oy/        yyy:                                  
+         `+  `syyo .:  `yyy:`.:so        yyy:                                  
+         `+   .yyyo/   `yyy:    +    `   yyy:                                  
+         `+    .yyo    `yyy:    `   `+   yyy:                                  
+         `o     -o     .yyy:       -s+   yyy/                                  
+      `.:sy+-.      `.:syyy/----:+syy-   yyyy/-`                               
+                                                                               
+                                                                               
+                                                                               
+                                                                               
+                                                                               ".colorize(:light_blue)
          welcome_guest
          Api.enter_museum
          main_functions
@@ -52,7 +84,7 @@ class Cli
 
     def get_department_items(num_id) 
         art_dep_id = (Museum.all[num_id - 1]).id
-        museum = Museum.find_by_id(num_id)
+        museum = Museum.find_by_id(art_dep_id)
             if museum.art_ids == []
                 call = Api.department_by_id(art_dep_id)
                 call.each {|info| museum.add_art_ids(info)}
@@ -79,7 +111,8 @@ class Cli
                 user_second_selection_input
             end
         input 
-        museum = Museum.find_by_id(num_id)
+        art_dep_id = (Museum.all[num_id - 1]).id
+        museum = Museum.find_by_id(art_dep_id)
         artwork_id = museum.art_ids[input -1]
         # artwork_id = Department.all[input -1].art_id   #old code/ refactored into a save method
         department = Department.find_by_id(artwork_id)
@@ -87,8 +120,8 @@ class Cli
                 call = Api.artwork_by_id(artwork_id)
                 department.add_art_details(call)
             end
+            # binding.pry
         return artwork_id
-     #     binding.pry
     end
 
     def print_selection_details(second_input)
@@ -140,10 +173,6 @@ class Cli
 
 
 
-
- def lkjslkj 
-    dlkjslkja;dlkjslkja
- end
 
 
 
