@@ -25,7 +25,8 @@ class Api
     end
 
     def self.artwork_by_id(artwork_id)
-        puts "Working on it!  =)"
+        puts "Working"
+        puts artwork_id
         response = RestClient.get(ROOT_URL + "objects/" + "#{artwork_id}")
         data = JSON.parse(response.body)
         
