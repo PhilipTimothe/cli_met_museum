@@ -29,11 +29,8 @@ class Cli
          `+    .yyo    `yyy:    `   `+   yyy:                                  
          `o     -o     .yyy:       -s+   yyy/                                  
       `.:sy+-.      `.:syyy/----:+syy-   yyyy/-`                               
-                                                                               
-                                                                               
-                                                                               
-                                                                               
-                                                                               ".colorize(:light_blue)
+                                                     ".colorize(:light_blue)
+        sleep 1
          welcome_guest
          Api.enter_museum
          main_functions
@@ -58,7 +55,7 @@ class Cli
 
     def print_all_art_departments
         puts ""
-        Museum.all.each.with_index(1) { |departments, index| puts "#{index}. " + "#{departments.name}" }
+        Museum.all.each.with_index(1) { |departments, index| puts "#{index}. " + "#{departments.name}".colorize(:light_green) }
     end 
 
     def print_selection_prompt
@@ -89,9 +86,6 @@ class Cli
                 call = Api.department_by_id(art_dep_id)
                 call.each {|info| museum.add_art_ids(info)}
             end
-        # museum.add_art_ids(call).flatten
-        # museum.art_ids << call
-        # binding.pry
     end
 
     def print_second_selection_prompt
@@ -107,8 +101,8 @@ class Cli
                 puts ""
                 puts "So sorry, that is not a valid choice."
                 puts "Please enter a number between 1 and #{Department.all.size}, then press the enter key!"
-                sleep 1.5
-                user_second_selection_input
+                sleep 1
+                user_second_selection_input(num_id)
             end
         input 
         art_dep_id = (Museum.all[num_id - 1]).id
@@ -128,15 +122,15 @@ class Cli
         department = Department.find_by_id(second_input)
         sleep 1
         puts ""
-        puts "Artist: #{department.art_details[0].artist}"
-        puts "Artwork: #{department.art_details[0].artwork}"
-        puts "Culture: #{department.art_details[0].culture}"
-        puts "Meduim: #{department.art_details[0].medium}"
-        puts "Origin Date: #{department.art_details[0].origin_date}"
-        puts "Region: #{department.art_details[0].region}"
+        puts "Artist: #{department.art_details[0].artist}".colorize(:light_green)
+        puts "Artwork: #{department.art_details[0].artwork}".colorize(:light_green)
+        puts "Culture: #{department.art_details[0].culture}".colorize(:light_green)
+        puts "Meduim: #{department.art_details[0].medium}".colorize(:light_green)
+        puts "Origin Date: #{department.art_details[0].origin_date}".colorize(:light_green)
+        puts "Region: #{department.art_details[0].region}".colorize(:light_green)
         puts ""
         puts "follow the artwork website link to intimately experience this work."
-        puts "Artwork Website Url: #{department.art_details[0].url}"
+        puts "Artwork Website Url: #{department.art_details[0].url}".colorize(:light_red)
         puts ""
  #       binding.pry
     end
@@ -148,9 +142,9 @@ class Cli
 
     def explore_more?
         puts ""
-        puts "Would like to explore more art from this category? Enter y / n "
+        puts "Would like to explore more art from this category? Enter" + " y ".colorize(:red) + "/" + " n ".colorize(:red)
         puts ""
-        puts "Want to select a different art category? Enter m "
+        puts "Want to select a different art category? Enter" + " m ".colorize(:red)
         input = gets.chomp
 
         if input == "y" 
@@ -161,7 +155,9 @@ class Cli
             explore_more?
         elsif input == "n"
             exit_program
-        elsif input == "m"
+        end
+
+        if input == "m" 
             main_functions
         end
     end
