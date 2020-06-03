@@ -16,6 +16,7 @@ class Api
 
     def self.department_by_id(art_dep_id)
         puts "Working on it!  =)"
+        puts art_dep_id
         response = RestClient.get(ROOT_URL + "search?departmentId=" + "#{art_dep_id}" + "&q=cat")
         data = JSON.parse(response.body)
         data['objectIDs'].each do |id| id 

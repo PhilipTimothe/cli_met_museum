@@ -34,135 +34,122 @@ class Cli
          welcome_guest
          Api.enter_museum
          main_functions
-         second_functions
-         third_functions
-         exit_program
     end
+
+#............................................................program functions    
 
     def main_functions
         print_all_art_departments
         print_selection_prompt
-        @num_id = valid?(user_selection_input) #(validate selection id number)
+        @num_id = valid?(user_selection_input)
+        second_functions #
     end
 
     def second_functions
         get_department_items(@num_id)
+        third_functions #
+    end
+    
+    def third_functions
         print_second_selection_prompt
         @num = second_valid?(user_second_selection_input)
-        details = get_artwork_details(@num)
-        print_selection_details(details)
+        fourth_functions #
+    end
+
+    def fourth_functions
+        @details = get_artwork_details(@num)
+        fifth_functions #
+    end
+
+    def fifth_functions
+        print_selection_details(@details)
         print_continuation_prompt
+        sixth_functions #
+    end
+
+    def sixth_functions
         continuation_input
+        last_functions #
     end
-
-    def third_functions
+    
+    def last_functions
         explore_more?
-        last_valid?
+        last_valid?(last_input)
     end
 
-    def exit_program  
-        puts ""
-        puts "Dont forget, art makes life fun!!!  See you next time  =)"
-    end
-
+ #.......................................................................active methods   
     def welcome_guest
         puts "Welcome to one the worlds best collections of Art!!!"
-        sleep 0.5
     end
-
+    
     def print_all_art_departments
         puts ""
         Museum.all.each.with_index(1) { |departments, index| puts "#{index}. " + "#{departments.name}".colorize(:light_green) }
     end 
-
+    
     def print_selection_prompt
         puts ""
         puts "What form of art would you like to explore today?"
         puts "Please enter a number, then press the enter key!"
     end 
-
+    
     def user_selection_input
         gets.chomp
     end
-
+    
     def valid?(num_id)
-        num_id = num_id.to_i
-            if num_id < 1 || num_id > Museum.all.size
-                puts "So sorry, that is not a valid choice."
-                puts "Please enter a valid number from list."
-                sleep 1
-                main_functions 
-            end
-        num_id    
+        num = num_id.to_i
+        if num < 1 || num > Museum.all.size
+            puts "So sorry, that is not a valid choice."
+            puts "Please enter a valid number from list."
+            sleep 0.5
+            main_functions 
+        end
+        num
     end
-
+    
     def get_department_items(num_id) 
         art_dep_id = (Museum.all[num_id - 1]).id
-        # binding.pry
         museum = Museum.find_by_id(art_dep_id)
-            if museum.art_ids == []
-                call = Api.department_by_id(art_dep_id)
-                call.each {|info| museum.add_art_ids(info)}
-            end
+        if museum.art_ids == []
+            call = Api.department_by_id(art_dep_id)
+            call.each {|info| museum.add_art_ids(info)}
+        end
     end
-
+    
     def print_second_selection_prompt
         sleep 1
         puts ""
         puts "Explore a random piece of art work!"
         puts "Enter a number between 1 and #{Department.all.size}, then press the enter key!"
     end
-
+    
     def user_second_selection_input
-        gets.strip 
+        gets.chomp 
     end
-
+    
     def second_valid?(num)
-        num = num.to_i
-            if num < 1 || num > Department.all.size
-                puts ""
-                puts "So sorry, that is not a valid choice."
-                # puts "Please enter a number between 1 and #{Department.all.size}, then press the enter key!"
-                sleep 1
-                second_functions
-            end
-        num
+        number = num.to_i
+        if number < 1 || number > Department.all.size
+            puts ""
+            puts "So sorry, that is not a valid choice."
+            third_functions
+        end
+        number
     end
-
+    
     def get_artwork_details(input)
         art_dep_id = (Museum.all[@num_id - 1]).id
         museum = Museum.find_by_id(art_dep_id)
-        artwork_id = museum.art_ids[input -1]
+        artwork_id = museum.art_ids[input - 1]
         department = Department.find_by_id(artwork_id)
-            if department.art_details == []
-                call = Api.artwork_by_id(artwork_id)
-                department.add_art_details(call)
-            end
+        if department.art_details == []
+            call = Api.artwork_by_id(artwork_id)
+            department.add_art_details(call)
+        end
         artwork_id
     end
-
-    # def user_second_selection_input(num_id)
-    #     input = gets.chomp.to_i
-    #         if input < 1 || input > Department.all.size
-    #             puts ""
-    #             puts "So sorry, that is not a valid choice."
-    #             puts "Please enter a number between 1 and #{Department.all.size}, then press the enter key!"
-    #             sleep 1
-    #             user_second_selection_input(num_id)
-    #         end
-    #     art_dep_id = (Museum.all[num_id - 1]).id
-    #     museum = Museum.find_by_id(art_dep_id)
-    #     artwork_id = museum.art_ids[input -1]
-    #     # artwork_id = Department.all[input -1].art_id   #old code/ refactored into a save method
-    #     department = Department.find_by_id(artwork_id)
-    #         if department.art_details == []
-    #             call = Api.artwork_by_id(artwork_id)
-    #             department.add_art_details(call)
-    #         end
-    #         # binding.pry
-    #     return artwork_id
-    # end
-
+    
     def print_selection_details(details)
         department = Department.find_by_id(details)
         sleep 1
@@ -177,20 +164,19 @@ class Cli
         puts "follow the artwork website link to intimately experience this work."
         puts "Artwork Website Url: #{department.art_details[0].url}".colorize(:light_red)
         puts ""
- #       binding.pry
     end
-
+    
     def print_continuation_prompt
         puts "Press enter key to continue!"
     end
-
+    
     def continuation_input
         input = gets.strip
-            if input == "\n" 
-                third_functions
-            end
+        if input == "\n" 
+            explore_more?
+        end
     end
-
+    
     def explore_more?
         puts ""
         puts "Would like to explore more art from this category? Enter" + " y ".colorize(:red) + "/" + " n ".colorize(:red)
@@ -198,29 +184,49 @@ class Cli
         puts "Want to select a different art category? Enter" + " m ".colorize(:red)
     end
 
-    def last_valid?    
-        input = gets.strip
-            if input == "y" 
-                second_functions
-            elsif input == "n"
-                exit_program
-            elsif input == "m" 
-                main_functions
-            else
-                puts "Sorry, we do not understand."
-                third_functions
-            end
+    def last_input
+        gets.chomp
     end
-
-
-
-
-
-
-
-
-
-
+    
+    def last_valid?(input)    
+        if input == "m" 
+            main_functions
+        elsif input == "y" 
+            third_functions
+        elsif input == "n"
+            exit_program
+        else
+            puts "Sorry, we do not understand."
+            last_functions
+        end
+    end
+    
+    def exit_program  
+        puts ""
+        puts "Dont forget, art makes life fun!!!  See you next time  =)"
+    end
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    # case input
+    #     when "m"
+    #         main_functions
+    #         second_functions
+    #     when "y"
+    #         second_functions
+    #     when "n"
+    #         return exit_program
+    #     else
+    #         puts "Sorry, we do not understand."
+    #         explore_more?
+    #         last_valid?
+    # end
 
 
 
