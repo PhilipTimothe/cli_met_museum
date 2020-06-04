@@ -68,9 +68,16 @@ class Cli
                 print_selection_details(details)
                 explore_more?
             else
+                puts ""
+                puts "So sorry, that is not a valid choice."
+                puts "Lets start again!"
+                sleep 1
                 main_functions
             end
         else
+            puts "So sorry, that is not a valid choice."
+            puts "Please enter a valid number from list."
+            sleep 0.5
             main_functions
         end
     end
