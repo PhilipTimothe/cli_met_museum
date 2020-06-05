@@ -1,7 +1,21 @@
-# cli_met_museum
+# Cli Met Museum Project
 
-The full idea of this Cli is to allow the user to experience the museum by department and specific category.  The departments will be listed but the next endpoints will be chosen at random.  
+## Concept & Inspiration
 
-Refactor to save call details into arrays so that multiple calls wouldnt happen.  Successful completed methods to of belong-to relationship.  Did not quite utilize it the way intended but the success lies in the methods used to save the first call method.  Next the attempt will be to successfully stop the third call from being use on the same information twice.  
+This project was inspired by the idea of exploring art.  Museum art is extraordinary and the chance to experience it is worth a moment or two.  This project does just that.  Its purpose is to give the user the opportunity to explore art through a series of commands.  These commands will allow the user to make leveled choices that will ultimately lead to details/data on a specific gnere of art but at random selection.      
 
-Program is successfully working after refactoring a few methods and making an instance variable so that information is passed through freely throughout the whole cli rb.  
+## Installation
+
+Run bundle to install gems:
+
+```bash
+bundle
+```
+
+## Api Source
+
+Main endpoint:
+
+```bash
+ 'https://collectionapi.metmuseum.org/public/collection/v1/'
+ ```
