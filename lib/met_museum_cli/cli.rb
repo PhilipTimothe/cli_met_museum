@@ -62,7 +62,7 @@ class Cli
             get_department_items
             print_second_selection_prompt
             input = gets.chomp
-            if valid?(input)
+            if second_valid?(input)
                 @artwork_choice = input.to_i
                 details = get_artwork_details
                 print_selection_details(details)
@@ -116,11 +116,20 @@ class Cli
     
     def print_second_selection_prompt
         sleep 1
+        art_dep_id = (Museum.all[@art_dep_choice - 1]).id
+        museum = Museum.find_by_id(art_dep_id)
         puts ""
         puts "Explore a random piece of art work!"
-        puts "Enter a number between 1 and #{Department.all.size}, then press the enter key!"
+        puts "Enter a number between 1 and #{museum.art_ids.size}, then press the enter key!"
     end
     
+    def second_valid?(input)
+        art_dep_id = (Museum.all[@art_dep_choice - 1]).id
+        museum = Museum.find_by_id(art_dep_id)
+        return false if input == ""   
+        !(input.to_i < 1 || input.to_i > museum.art_ids.size)
+    end
+
     def get_artwork_details
         art_dep_id = (Museum.all[@art_dep_choice - 1]).id
         museum = Museum.find_by_id(art_dep_id)
