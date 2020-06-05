@@ -2,54 +2,51 @@ require 'pry'
 class Cli
 
     def run
-        puts "                                                                                                    
-        
-        
-        
-        
+        puts " 
         /yys/-.yyy/.-:+yyyyys:.  `-+yyyo----/oyyo                              
         ss-   `yyy:    `oyyy:       syy+      .+y                              
-        `+     `yyy:     .yyy-       syy+   ``   :-                             
-        `yyy:     .yyy-       syy+   -:    `                             
-        `yyy:     .yyy:.......syy+.-/yo                                  
-        `yyy:     .yyy:```````syy+`.:oy                                  
-        `yyy:     .yyy-       syy+    /.                                 
-        `yyy:     .yyy-       syy+     `   /`                            
-        `yyy:     .yyy-       syy+       .os                             
-        .-oyyy:  `.:syyys-`  `./yyyo....-/oyy/                             
-        ``````    `````````   ```````````````                              
-        ````               `````````````````````````                            
-        .-oyyo.         `+yy/...-+yyyyo:..yyy/.-+yyo                            
-        `yyyy.        +yyy:     `oy:    yyy:   `+y                            
-        `ooyyy.      /-yyy:   .  `+     yyy:     :.                           
-        `+`syys`    /.`yyy:   +.        yyy:                                  
-        `+ `syys`  :- `yyy/-:oy/        yyy:                                  
-        `+  `syyo .:  `yyy:`.:so        yyy:                                  
-        `+   .yyyo/   `yyy:    +    `   yyy:                                  
-        `+    .yyo    `yyy:    `   `+   yyy:                                  
-        `o     -o     .yyy:       -s+   yyy/                                  
-        `.:sy+-.      `.:syyy/----:+syy-   yyyy/-`                               
-        ".colorize(:light_blue)
+       `+     `yyy:     .yyy-       syy+   ``   :-                             
+              `yyy:     .yyy-       syy+   -:    `                             
+              `yyy:     .yyy:.......syy+.-/yo                                  
+              `yyy:     .yyy:```````syy+`.:oy                                  
+              `yyy:     .yyy-       syy+    /.                                 
+              `yyy:     .yyy-       syy+     `   /`                            
+              `yyy:     .yyy-       syy+       .os                             
+            .-oyyy:  `.:syyys-`  `./yyyo....-/oyy/                             
+            ``````    `````````   ```````````````                              
+       ````               `````````````````````````                            
+       .-oyyo.         `+yy/...-+yyyyo:..yyy/.-+yyo                            
+         `yyyy.        +yyy:     `oy:    yyy:   `+y                            
+         `ooyyy.      /-yyy:   .  `+     yyy:     :.                           
+         `+`syys`    /.`yyy:   +.        yyy:                                  
+         `+ `syys`  :- `yyy/-:oy/        yyy:                                  
+         `+  `syyo .:  `yyy:`.:so        yyy:                                  
+         `+   .yyyo/   `yyy:    +    `   yyy:                                  
+         `+    .yyo    `yyy:    `   `+   yyy:                                  
+         `o     -o     .yyy:       -s+   yyy/                                  
+      `.:sy+-.      `.:syyy/----:+syy-   yyyy/-`                
+                                                    ".colorize(:light_blue)
         sleep 1
         welcome_guest
         Api.enter_museum
         main_functions
-
+        
         input = ""
         while input != "n"
         input = gets.strip
+        # binding.pry
             case input
-                when "m"
-                    main_functions
                 when "y"
-                    third_functions
+                    main_functions
                 when "n"
                     puts ""
                     puts "Dont forget, art makes life fun!!!  See you next time  =)"  
                     break
+                when "\n"
+                    break
                 else
                     puts "Sorry, we do not understand."
-                    last_functions
+                    explore_more?
             end
         end
     end
@@ -59,33 +56,30 @@ class Cli
     def main_functions
         print_all_art_departments
         print_selection_prompt
-        @num_id = valid?(user_selection_input)
-        second_functions #
-    end
-
-    def second_functions
-        get_department_items(@num_id)
-        third_functions #
-    end
-    
-    def third_functions
-        print_second_selection_prompt
-        @num = second_valid?(user_second_selection_input)
-        fourth_functions #
-    end
-
-    def fourth_functions
-        @details = get_artwork_details(@num)
-        fifth_functions #
-    end
-
-    def fifth_functions
-        print_selection_details(@details)
-        last_functions #
-    end
-    
-    def last_functions
-        explore_more?
+        input = gets.chomp 
+        if valid?(input) 
+            @art_dep_choice = input.to_i
+            get_department_items
+            print_second_selection_prompt
+            input = gets.chomp
+            if valid?(input)
+                @artwork_choice = input.to_i
+                details = get_artwork_details
+                print_selection_details(details)
+                explore_more?
+            else
+                puts ""
+                puts "So sorry, that is not a valid choice."
+                puts "Lets start again!"
+                sleep 1
+                main_functions
+            end
+        else
+            puts "So sorry, that is not a valid choice."
+            puts "Please enter a valid number from list."
+            sleep 0.5
+            main_functions
+        end
     end
 
  #.......................................................................active methods 
@@ -105,24 +99,14 @@ class Cli
         puts "What form of art would you like to explore today?"
         puts "Please enter a number, then press the enter key!"
     end 
-    
-    def user_selection_input
-        gets.chomp
+
+    def valid?(input)
+        return false if input == ""   
+        !(input.to_i < 1 || input.to_i > Museum.all.size)
     end
     
-    def valid?(num_id)
-        num = num_id.to_i
-        if num < 1 || num > Museum.all.size
-            puts "So sorry, that is not a valid choice."
-            puts "Please enter a valid number from list."
-            sleep 0.5
-            main_functions 
-        end
-        return num
-    end
-    
-    def get_department_items(num_id) 
-        art_dep_id = (Museum.all[num_id - 1]).id
+    def get_department_items 
+        art_dep_id = (Museum.all[@art_dep_choice - 1]).id
         museum = Museum.find_by_id(art_dep_id)
         if museum.art_ids == []
             call = Api.department_by_id(art_dep_id)
@@ -137,24 +121,10 @@ class Cli
         puts "Enter a number between 1 and #{Department.all.size}, then press the enter key!"
     end
     
-    def user_second_selection_input
-        gets.strip 
-    end
-    
-    def second_valid?(num)
-        number = num.to_i
-        if number < 1 || number > Department.all.size
-            puts ""
-            puts "So sorry, that is not a valid choice."
-            third_functions
-        end
-        return number
-    end
-    
-    def get_artwork_details(input)
-        art_dep_id = (Museum.all[@num_id - 1]).id
+    def get_artwork_details
+        art_dep_id = (Museum.all[@art_dep_choice - 1]).id
         museum = Museum.find_by_id(art_dep_id)
-        artwork_id = museum.art_ids[input - 1]
+        artwork_id = museum.art_ids[@artwork_choice - 1]
         department = Department.find_by_id(artwork_id)
         if department.art_details == []
             call = Api.artwork_by_id(artwork_id)
@@ -181,25 +151,12 @@ class Cli
     
     def explore_more?
         puts ""
-        puts "Would like to explore more art from this category? Enter" + " y ".colorize(:red) + "/" + " n ".colorize(:red)
-        puts ""
-        puts "Want to select a different art category? Enter" + " m ".colorize(:red)
+        puts "Would like to explore more art? Enter" + " y ".colorize(:red) + "/" + " n ".colorize(:red)
     end
 
 
 
 
-
-# if input == "m" 
-#     main_functions
-# elsif input == "y" 
-#     third_functions
-# elsif input == "n"
-#     puts "Dont forget, art makes life fun!!!  See you next time  =)"  
-#     break
-# else
-#     puts "Sorry, we do not understand."
-#         last_functions
 
 
 
