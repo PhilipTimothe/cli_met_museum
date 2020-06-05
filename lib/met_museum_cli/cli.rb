@@ -3,37 +3,55 @@ class Cli
 
     def run
         puts "                                                                                                    
-                                                                                                    
-                                                                                                    
-                                                                                                    
-                                                                                                    
+        
+        
+        
+        
         /yys/-.yyy/.-:+yyyyys:.  `-+yyyo----/oyyo                              
         ss-   `yyy:    `oyyy:       syy+      .+y                              
-       `+     `yyy:     .yyy-       syy+   ``   :-                             
-              `yyy:     .yyy-       syy+   -:    `                             
-              `yyy:     .yyy:.......syy+.-/yo                                  
-              `yyy:     .yyy:```````syy+`.:oy                                  
-              `yyy:     .yyy-       syy+    /.                                 
-              `yyy:     .yyy-       syy+     `   /`                            
-              `yyy:     .yyy-       syy+       .os                             
-            .-oyyy:  `.:syyys-`  `./yyyo....-/oyy/                             
-            ``````    `````````   ```````````````                              
-       ````               `````````````````````````                            
-       .-oyyo.         `+yy/...-+yyyyo:..yyy/.-+yyo                            
-         `yyyy.        +yyy:     `oy:    yyy:   `+y                            
-         `ooyyy.      /-yyy:   .  `+     yyy:     :.                           
-         `+`syys`    /.`yyy:   +.        yyy:                                  
-         `+ `syys`  :- `yyy/-:oy/        yyy:                                  
-         `+  `syyo .:  `yyy:`.:so        yyy:                                  
-         `+   .yyyo/   `yyy:    +    `   yyy:                                  
-         `+    .yyo    `yyy:    `   `+   yyy:                                  
-         `o     -o     .yyy:       -s+   yyy/                                  
-      `.:sy+-.      `.:syyy/----:+syy-   yyyy/-`                               
-                                                     ".colorize(:light_blue)
+        `+     `yyy:     .yyy-       syy+   ``   :-                             
+        `yyy:     .yyy-       syy+   -:    `                             
+        `yyy:     .yyy:.......syy+.-/yo                                  
+        `yyy:     .yyy:```````syy+`.:oy                                  
+        `yyy:     .yyy-       syy+    /.                                 
+        `yyy:     .yyy-       syy+     `   /`                            
+        `yyy:     .yyy-       syy+       .os                             
+        .-oyyy:  `.:syyys-`  `./yyyo....-/oyy/                             
+        ``````    `````````   ```````````````                              
+        ````               `````````````````````````                            
+        .-oyyo.         `+yy/...-+yyyyo:..yyy/.-+yyo                            
+        `yyyy.        +yyy:     `oy:    yyy:   `+y                            
+        `ooyyy.      /-yyy:   .  `+     yyy:     :.                           
+        `+`syys`    /.`yyy:   +.        yyy:                                  
+        `+ `syys`  :- `yyy/-:oy/        yyy:                                  
+        `+  `syyo .:  `yyy:`.:so        yyy:                                  
+        `+   .yyyo/   `yyy:    +    `   yyy:                                  
+        `+    .yyo    `yyy:    `   `+   yyy:                                  
+        `o     -o     .yyy:       -s+   yyy/                                  
+        `.:sy+-.      `.:syyy/----:+syy-   yyyy/-`                               
+        ".colorize(:light_blue)
         sleep 1
-         welcome_guest
-         Api.enter_museum
-         main_functions
+        welcome_guest
+        Api.enter_museum
+        main_functions
+
+        input = ""
+        while input != "n"
+        input = gets.strip
+            case input
+                when "m"
+                    main_functions
+                when "y"
+                    third_functions
+                when "n"
+                    puts ""
+                    puts "Dont forget, art makes life fun!!!  See you next time  =)"  
+                    break
+                else
+                    puts "Sorry, we do not understand."
+                    last_functions
+            end
+        end
     end
 
 #............................................................program functions    
@@ -63,21 +81,16 @@ class Cli
 
     def fifth_functions
         print_selection_details(@details)
-        print_continuation_prompt
-        sixth_functions #
-    end
-
-    def sixth_functions
-        continuation_input
         last_functions #
     end
     
     def last_functions
         explore_more?
-        last_valid?(last_input)
     end
 
- #.......................................................................active methods   
+ #.......................................................................active methods 
+ 
+ 
     def welcome_guest
         puts "Welcome to one the worlds best collections of Art!!!"
     end
@@ -105,7 +118,7 @@ class Cli
             sleep 0.5
             main_functions 
         end
-        num
+        return num
     end
     
     def get_department_items(num_id) 
@@ -125,7 +138,7 @@ class Cli
     end
     
     def user_second_selection_input
-        gets.chomp 
+        gets.strip 
     end
     
     def second_valid?(num)
@@ -135,7 +148,7 @@ class Cli
             puts "So sorry, that is not a valid choice."
             third_functions
         end
-        number
+        return number
     end
     
     def get_artwork_details(input)
@@ -166,17 +179,6 @@ class Cli
         puts ""
     end
     
-    def print_continuation_prompt
-        puts "Press enter key to continue!"
-    end
-    
-    def continuation_input
-        input = gets.strip
-        if input == "\n" 
-            explore_more?
-        end
-    end
-    
     def explore_more?
         puts ""
         puts "Would like to explore more art from this category? Enter" + " y ".colorize(:red) + "/" + " n ".colorize(:red)
@@ -184,49 +186,24 @@ class Cli
         puts "Want to select a different art category? Enter" + " m ".colorize(:red)
     end
 
-    def last_input
-        gets.chomp
-    end
+
+
+
+
+# if input == "m" 
+#     main_functions
+# elsif input == "y" 
+#     third_functions
+# elsif input == "n"
+#     puts "Dont forget, art makes life fun!!!  See you next time  =)"  
+#     break
+# else
+#     puts "Sorry, we do not understand."
+#         last_functions
+
+
+
     
-    def last_valid?(input)    
-        if input == "m" 
-            main_functions
-        elsif input == "y" 
-            third_functions
-        elsif input == "n"
-            exit_program
-        else
-            puts "Sorry, we do not understand."
-            last_functions
-        end
-    end
-    
-    def exit_program  
-        puts ""
-        puts "Dont forget, art makes life fun!!!  See you next time  =)"
-    end
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    # case input
-    #     when "m"
-    #         main_functions
-    #         second_functions
-    #     when "y"
-    #         second_functions
-    #     when "n"
-    #         return exit_program
-    #     else
-    #         puts "Sorry, we do not understand."
-    #         explore_more?
-    #         last_valid?
-    # end
 
 
 
