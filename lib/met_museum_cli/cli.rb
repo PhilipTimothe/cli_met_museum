@@ -34,7 +34,6 @@ class Cli
         input = ""
         while input != "n"
         input = gets.strip
-        # binding.pry
             case input
                 when "y"
                     main_functions
@@ -42,8 +41,9 @@ class Cli
                     puts ""
                     puts "Dont forget, art makes life fun!!!  See you next time  =)"  
                     break
-                when "\n"
-                    break
+                when "m"
+                    continue_helper(input)
+                    break 
                 else
                     puts "Sorry, we do not understand."
                     explore_more?
@@ -51,7 +51,7 @@ class Cli
         end
     end
 
-#............................................................program functions    
+#----------------------------------------------------------------------------------------------------program functions    
 
     def main_functions
         print_all_art_departments
@@ -60,20 +60,21 @@ class Cli
         if valid?(input) 
             @art_dep_choice = input.to_i
             get_department_items
-            print_second_selection_prompt
-            input = gets.chomp
-            if second_valid?(input)
-                @artwork_choice = input.to_i
-                details = get_artwork_details
-                print_selection_details(details)
-                explore_more?
-            else
-                puts ""
-                puts "So sorry, that is not a valid choice."
-                puts "Lets start again!"
-                sleep 1
-                main_functions
-            end
+            # print_second_selection_prompt
+            # input = gets.chomp
+            continue_helper(input)
+            # if second_valid?(input)
+            #     @artwork_choice = input.to_i
+            #     details = get_artwork_details
+            #     print_selection_details(details)
+            #     explore_more?
+            # else
+            #     puts ""
+            #     puts "So sorry, that is not a valid choice."
+            #     puts "Lets start again!"
+            #     sleep 1
+            #     main_functions
+            # end
         else
             puts "So sorry, that is not a valid choice."
             puts "Please enter a valid number from list."
@@ -82,7 +83,7 @@ class Cli
         end
     end
 
- #.......................................................................active methods 
+ #------------------------------------------------------------------------------------------------active methods 
  
  
     def welcome_guest
@@ -161,7 +162,29 @@ class Cli
     def explore_more?
         puts ""
         puts "Would like to explore more art? Enter" + " y ".colorize(:red) + "/" + " n ".colorize(:red)
+        puts ""
+        puts "Enter" + "m" + " to explore another random art piece"
     end
+
+#------------------------------------------------------------------------------------------- CLI Assessement Addition    
+
+    def continue_helper(input)
+        print_second_selection_prompt
+        input = gets.chomp
+            if second_valid?(input)
+                @artwork_choice = input.to_i
+                details = get_artwork_details
+                print_selection_details(details)
+                explore_more?
+            else
+                puts ""
+                puts "So sorry, that is not a valid choice."
+                puts "Lets start again!"
+                sleep 1
+                main_functions
+            end
+    end
+    
 
 
 
